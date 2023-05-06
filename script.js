@@ -1,10 +1,12 @@
 const flex = document.getElementById("flex");
-let cartasSeleccionadas = []; //va a ser un array de los índices de cada tarjeta seleccionada
+let cartasSeleccionadas = []; 
 let contadorGanados = 0;
-const resultado = document.getElementById("resultado"); //para mostrar los resultados a medida se encuentran los pares
+const resultado = document.getElementById("resultado"); 
+
 let primerSonido = document.getElementById('sonido1');
 let segundoSonido = document.getElementById('sonido2');
 let tercerSonido = document.getElementById('sonido3');
+
 const REINICIO = document.getElementById('reinicio');
 let element = document.getElementById('cronometro');
 let timer;
@@ -46,7 +48,7 @@ let tarjetas = [
     }
   ];
 
-  tarjetas = tarjetas.concat(tarjetas); //duplicamos los elementos del array
+  tarjetas = tarjetas.concat(tarjetas); 
 
   REINICIO.addEventListener('click', reiniciar);
 
@@ -62,11 +64,10 @@ let tarjetas = [
     armarTablero();
   }
 
-  //este es el algoritmo de mezcla Fisher-Yates
 function revolverTarjetas(array) {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      const temp = array[i];    //para el intercambio se utiliza una variable auxiliar
+      const temp = array[i];  
       array[i] = array[j];
       array[j] = temp;
     }
@@ -75,20 +76,16 @@ function revolverTarjetas(array) {
 
   tarjetas = revolverTarjetas(tarjetas);
   
-  //armamos el tablero de forma dinamica
 function armarTablero() {
     cronometroSegundos();
     const SPAN = document.createElement('span');
 
     for (let i = 0; i < tarjetas.length; i++) {
-            //creamos un elemento de tipo <img />
         const tarjeta = document.createElement("img");
-        //seteamos la imagen de patron por defecto
         tarjeta.setAttribute("src", "images/caja.jpg");
     
         tarjeta.setAttribute("data-index", i);
 
-        //esto es para agregar las clases al objeto "tarjeta"
         tarjeta.classList.add("imagen");
 
         tarjeta.setAttribute("name", tarjetas[i].nombre);
@@ -101,14 +98,12 @@ function armarTablero() {
 
 
 function voltearTarjeta() {
-     //obtenemos el índice del array de perros
     let index = this.getAttribute("data-index");
 
     cartasSeleccionadas.push(index);
 
     this.setAttribute("src", tarjetas[index].imagen);
 
-    //cada 2 tarjetas se hacen las validaciones
     if (cartasSeleccionadas.length === 2) {
         setTimeout(validarTarjetasSeleccionadas, 500);
     }
@@ -122,7 +117,6 @@ function voltearTarjeta() {
 
     if (primeraTarjetaSeleccionadaIndex == segundaTarjetaSeleccionadaIndex) {
         alert("¡Es la misma tarjeta!");
-        //ponemos de vuelva a ambas la imagen del patron por defecto
         listaTarjetas[primeraTarjetaSeleccionadaIndex].setAttribute(
         "src",
         "images/pattern.jpg"
@@ -134,9 +128,7 @@ function voltearTarjeta() {
     }
 
          else if (listaTarjetas[primeraTarjetaSeleccionadaIndex].name === listaTarjetas[segundaTarjetaSeleccionadaIndex].name) {
-        //el atributo "name" guarda el nombre de la raza, si son iguales entonces es correcto
         primerSonido.play();
-        //cambiar la imagen por la del patron de finalizacion
         listaTarjetas[primeraTarjetaSeleccionadaIndex].setAttribute(
         "src",
         "images/pattern.jpg"
@@ -145,10 +137,9 @@ function voltearTarjeta() {
         "src",
         "images/pattern.jpg"
         );
-        //evitamos que se pueda volver a hacer click en las mismas
         listaTarjetas[primeraTarjetaSeleccionadaIndex].removeEventListener("click", voltearTarjeta);
         listaTarjetas[segundaTarjetaSeleccionadaIndex].removeEventListener("click", voltearTarjeta);
-        contadorGanados = contadorGanados + 2; //sumamos 2 porque fueron 2 las cartas correctas
+        contadorGanados = contadorGanados + 2;
     } else {
         segundoSonido.play();
         listaTarjetas[primeraTarjetaSeleccionadaIndex].setAttribute(
@@ -163,7 +154,7 @@ function voltearTarjeta() {
         tercerSonido.play();
         clearTimeout(timer)
     } else {
-        resultado.textContent = (contadorGanados / 2) + " razas encontradas"; //hay 2n pares, por ende hay n elementos distintos
+        resultado.textContent = (contadorGanados / 2) + " razas encontradas"; 
     }
   }
 
