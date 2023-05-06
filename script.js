@@ -4,6 +4,7 @@ let contadorGanados = 0;
 const resultado = document.getElementById("resultado"); //para mostrar los resultados a medida se encuentran los pares
 let primerSonido = document.getElementById('sonido1');
 let segundoSonido = document.getElementById('sonido2');
+let tercerSonido = document.getElementById('sonido3');
 const REINICIO = document.getElementById('reinicio');
 let element = document.getElementById('cronometro');
 let timer;
@@ -50,12 +51,13 @@ let tarjetas = [
   REINICIO.addEventListener('click', reiniciar);
 
   function reiniciar(){
-    let timer;
+    //let timer= null;
+    clearTimeout(timer);
     cartasSeleccionadas = [];
     contadorGanados = 0;
     flex.innerHTML= "";  
     element.innerHTML = "";
-    resultado.textContent = (contadorGanados / 2) + " razas encontradas";
+    resultado.textContent = (contadorGanados / 2) + " michis encontrados";
     tarjetas = revolverTarjetas(tarjetas)
     armarTablero();
   }
@@ -92,7 +94,7 @@ function armarTablero() {
         tarjeta.setAttribute("name", tarjetas[i].nombre);
 
         tarjeta.addEventListener("click", voltearTarjeta);
-
+      
         flex.appendChild(tarjeta);
     }
   }
@@ -158,6 +160,7 @@ function voltearTarjeta() {
     cartasSeleccionadas = [];
     if (contadorGanados === tarjetas.length) {
         resultado.textContent = "¡Felicidades! ¡Los encontraste a todos!";
+        tercerSonido.play();
         clearTimeout(timer)
     } else {
         resultado.textContent = (contadorGanados / 2) + " razas encontradas"; //hay 2n pares, por ende hay n elementos distintos
